@@ -1,8 +1,9 @@
 const font = {
   size: {
-    s: "1rem",
-    m: "1.1rem",
-    l: "1.2rem",
+    r: "1rem",
+    s: "1.1rem",
+    m: "1.2rem",
+    l: "1.3rem",
     xl: "1.6rem",
     title: "4.8rem",
   },
@@ -19,7 +20,7 @@ const radius = {
 };
 
 const light = {
-  bgColor: "#F5F5F5",
+  bgColor: "#FFFFFF",
   text: "#2D2B2E",
   border: "#666666",
   selectBgColor: "#FFFFFF",
@@ -28,6 +29,7 @@ const light = {
   dropDownActive: "#EEEEEE",
   chart: "#318EEF",
   chartBorder: "#DDDDDD",
+  skeleton: "#EEEEEE",
 };
 
 const defaultTheme = {

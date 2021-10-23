@@ -17,6 +17,9 @@ const GlobalStyle = createGlobalStyle`
     width: 100%;
     height: 100%;
   }
+  body {
+    background-color: ${({ theme }) => theme.color.bgColor};
+  }
   ul,ol,li {
     list-style: none;
   }
@@ -26,6 +29,10 @@ const GlobalStyle = createGlobalStyle`
     padding: 0;
     margin: 0;
     font-size: 10px;
+  }
+  a {
+    text-decoration: none;
+    color: ${({ theme }) => theme.color.text};
   }
 `;
 

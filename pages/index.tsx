@@ -1,27 +1,46 @@
 import type { NextPage } from "next";
-import styled from "styled-components";
-import useSWR from "swr";
-
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
+import { useState } from "react";
+import styled, { css } from "styled-components";
+import Layout from "../components/common/layout";
+import Form from "../components/form";
 
 const Home: NextPage = () => {
-  const SoloRank = "SoloRank";
-  const { data, error } = useSWR(
-    `https://api.kda.ai/kr/api/summoners/hide on bush?matchCategory=${SoloRank}`,
-    fetcher
-  );
-  console.log(data);
-  if (error) return <div>에러에러</div>;
-  if (!data) return <div>로딩로딩..</div>;
+  const [value, setValue] = useState("");
+
   return (
-    <main>
-      <StDiv>hi</StDiv>
-    </main>
+    <Layout pos={"center"}>
+      <StMain>
+        <StTitle>YOUR.GG</StTitle>
+        <StTitleXl>소환사를 검색하고 전적을 확인하세요!</StTitleXl>
+        <Form value={value} setValue={setValue} />
+      </StMain>
+    </Layout>
   );
 };
 
-const StDiv = styled.div`
-  color: ${({ theme }) => theme.color.chart};
+const StMain = styled.main`
+  margin-top: -20rem;
+`;
+
+const displayStyle = css`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const StTitle = styled.h1`
+  ${displayStyle};
+  color: ${({ theme }) => theme.color.text};
+  font-size: ${({ theme }) => theme.font.size.title};
+  font-weight: ${({ theme }) => theme.font.weight.bold};
+  font-style: italic;
+`;
+
+const StTitleXl = styled.h2`
+  ${displayStyle};
+  color: ${({ theme }) => theme.color.text};
+  font-size: ${({ theme }) => theme.font.size.xl};
+  font-weight: ${({ theme }) => theme.font.weight.bold};
 `;
 
 export default Home;
