@@ -1,9 +1,11 @@
 import Head from "next/head";
+import { useRouter } from "next/router";
 import styled from "styled-components";
 import Layout from "../../components/common/layout";
 import History from "../../components/history";
 import Summary from "../../components/summary";
 import axios from "axios";
+import { useEffect, useState } from "react";
 
 type Props = {
   query: {
@@ -27,11 +29,38 @@ type ProfileProps = {
     laning: number;
     role: number;
     matchCategory: string;
+    mostLanes: object[];
+    mostChampions: object[];
   };
 };
 
-const Profile = (props: ProfileProps) => {
-  const { data } = props;
+const Profile = ({ data }: ProfileProps) => {
+  const [isLoading, setLoading] = useState(false);
+  const router = useRouter();
+
+  const refresh = () => {
+    // history stack에 안쌓임
+    router.replace(router.asPath);
+  };
+
+  useEffect(() => {
+    refresh();
+    const handleStart = () => {
+      setLoading(true);
+    };
+    const handleStop = () => {
+      setLoading(false);
+    };
+
+    router.events.on("routeChangeStart", handleStart);
+    router.events.on("routeChangeComplete", handleStop);
+    router.events.on("routeChangeError", handleStop);
+    return () => {
+      router.events.off("routeChangeStart", handleStart);
+      router.events.off("routeChangeComplete", handleStop);
+      router.events.off("routeChangeError", handleStop);
+    };
+  }, []);
 
   return (
     <>
@@ -42,6 +71,7 @@ const Profile = (props: ProfileProps) => {
         <StMain>
           <StSection>
             <Summary
+              isLoading={isLoading}
               summoner={data.name}
               matchCategory={data.matchCategory}
               kda={data.kda}
@@ -51,7 +81,11 @@ const Profile = (props: ProfileProps) => {
           </StSection>
           <StBr />
           <StSection>
-            <History />
+            <History
+              isLoading={isLoading}
+              mostLanes={data.mostLanes}
+              mostChampions={data.mostChampions}
+            />
           </StSection>
         </StMain>
       </Layout>

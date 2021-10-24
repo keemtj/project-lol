@@ -1,10 +1,14 @@
 import styled, { css } from "styled-components";
-import Image from "next/image";
-import Boundary from "./common/boundary";
+import Skeleton from "./common/skeleton";
+import HistoryItem from "./historyItem";
 
-const History = () => {
-  const isShow = true;
+type HistoryProps = {
+  isLoading: boolean;
+  mostLanes: object[];
+  mostChampions: object[];
+};
 
+const History = ({ isLoading, mostLanes, mostChampions }: HistoryProps) => {
   return (
     <StArticle2>
       <StIndex>
@@ -15,31 +19,35 @@ const History = () => {
         <div>KDA</div>
       </StIndex>
       <StHistory>
-        {[1, 2, 3].map((item, index) => (
-          <StHistoryItem key={index}>
-            <div>
-              <Image
-                src={"/images/square.png"}
-                alt="image"
-                width="3.2rem"
-                height="3.2rem"
-              />
-              <div>
-                <div>Jungle</div>
-                <div>22 경기</div>
-              </div>
-            </div>
-            <div>53%</div>
-            <div>1.42</div>
-            <div>6.3</div>
-            <div>4.21</div>
-            {isShow && <Boundary />}
-          </StHistoryItem>
-        ))}
+        {isLoading ? (
+          <StLoadingWrapper>
+            <Skeleton shape="long" />
+            <Skeleton shape="long" />
+            <Skeleton shape="long" />
+            <Skeleton shape="long" />
+          </StLoadingWrapper>
+        ) : (
+          <>
+            {mostLanes.map((most: object, index: number) => (
+              <HistoryItem most={most} key={index} />
+            ))}
+            {mostChampions
+              .slice(0, 7 - mostLanes.length)
+              .map((most: object, index: number) => (
+                <HistoryItem most={most} key={index} />
+              ))}
+          </>
+        )}
       </StHistory>
     </StArticle2>
   );
 };
+
+const StLoadingWrapper = styled.div`
+  & > div + div {
+    margin-top: 1rem;
+  }
+`;
 
 const flexCenter = css`
   display: flex;
@@ -71,64 +79,6 @@ const StIndex = styled.nav`
 
 const StHistory = styled.ul`
   margin-top: 1rem;
-`;
-
-const StHistoryItem = styled.li`
-  ${flexCenter}
-  width: 100%;
-  height: 3rem;
-  margin: 1rem 0rem;
-  & > :nth-child(1) {
-    width: 10rem;
-    & {
-      img {
-        width: 3.2rem;
-        border-radius: ${({ theme }) => theme.radius.s};
-      }
-      & > :nth-child(2) {
-        display: flex;
-        flex-flow: column nowrap;
-        align-items: flex-start;
-        justify-content: space-evenly;
-        width: 4rem;
-        margin-left: 1rem;
-        & > :first-child {
-          color: ${({ theme }) => theme.color.text};
-          font-size: ${({ theme }) => theme.font.size.m};
-          font-weight: ${({ theme }) => theme.font.weight.bold};
-        }
-        & > :last-child {
-          color: ${({ theme }) => theme.color.text};
-          font-size: ${({ theme }) => theme.font.size.r};
-          font-weight: ${({ theme }) => theme.font.weight.normal};
-        }
-      }
-    }
-    & {
-      display: flex;
-      & > :first-child {
-        color: ${({ theme }) => theme.color.text};
-        font-size: ${({ theme }) => theme.font.size.m};
-        font-weight: ${({ theme }) => theme.font.weight.bold};
-      }
-      & > :last-child {
-        color: ${({ theme }) => theme.color.text};
-        font-size: ${({ theme }) => theme.font.size.r};
-        font-weight: ${({ theme }) => theme.font.weight.normal};
-      }
-    }
-  }
-  & > :nth-child(2),
-  & > :nth-child(3),
-  & > :nth-child(4),
-  & > :nth-child(5) {
-    ${flexCenter}
-    color: ${({ theme }) => theme.color.text};
-    font-size: ${({ theme }) => theme.font.size.l};
-    font-weight: ${({ theme }) => theme.font.weight.bold};
-    width: 4rem;
-  }
-  position: relative;
 `;
 
 export default History;

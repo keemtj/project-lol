@@ -11,7 +11,6 @@ const Form = (props: FormProps) => {
   const { value, setValue } = props;
   const router = useRouter();
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.value);
     setValue(e.target.value);
   };
 

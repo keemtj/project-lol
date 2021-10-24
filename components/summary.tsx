@@ -6,6 +6,7 @@ import { theme } from "../styles/theme";
 import Skeleton from "./common/skeleton";
 
 type SummaryProps = {
+  isLoading: boolean;
   summoner: string;
   matchCategory: string;
   kda: number;
@@ -14,6 +15,7 @@ type SummaryProps = {
 };
 
 const Summary = ({
+  isLoading,
   summoner,
   kda,
   laning,
@@ -23,7 +25,6 @@ const Summary = ({
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [category, setCategory] = useState(matchCategory);
-  const isLoading = true;
 
   const onClickDropDown = () => {
     setOpen(!open);

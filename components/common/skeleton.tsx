@@ -15,6 +15,8 @@ const widthStyle = (shape: string) => {
       return "10rem";
     case "wide":
       return "17.4rem";
+    case "long":
+      return "24.6rem";
     default:
       return null;
   }
@@ -26,6 +28,8 @@ const heightStyle = (shape: string) => {
       return "2rem";
     case "wide":
       return "100%";
+    case "long":
+      return "3rem";
     default:
       return null;
   }
