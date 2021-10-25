@@ -1,35 +1,97 @@
-import React from "react";
+import React, { useState } from "react";
 import styled, { css } from "styled-components";
 import Image from "next/image";
-import Boundary from "./common/boundary";
+import Link from "next/link";
+import Router from "next/router";
+import Triangle from "./common/triangle";
+import { useRouter } from "next/router";
 
 type MostlanesProps = {
   most: any;
+  summoner: string;
+  matchCategory: string;
 };
 
-const HistoryItem = ({ most }: MostlanesProps) => {
+const textUtil = (text: string) => {
+  const result = text.split(" ").join("+");
+  return result;
+};
+
+const HistoryItem = ({ most, summoner, matchCategory }: MostlanesProps) => {
   const { lane, matchCount, winRate, role, laning, kda, imageUrl, name, key } =
     most;
-  const isShow = true;
+  const router = useRouter();
+  const [hover, setHover] = useState(false);
+  const onMouseEnter = () => setHover(true);
+  const onMouseLeave = () => setHover(false);
+  const onClickHistoryItem = () => {
+    if (key) {
+      Router.push(
+        {
+          pathname: Router.pathname,
+          query: {
+            summoner,
+            matchCategory,
+            champion: name,
+            lane,
+          },
+        },
+        undefined,
+        { shallow: true }
+      );
+    } else {
+      Router.push(
+        {
+          pathname: Router.pathname,
+          query: {
+            summoner,
+            matchCategory,
+            lane,
+          },
+        },
+        undefined,
+        { shallow: true }
+      );
+    }
+  };
+  const href = `/profile?summoner=${textUtil(summoner)}&matchCategory=SoloRank${
+    key ? "&champion=" + textUtil(name) + "&lane=" + lane : "&lane=" + lane
+  }`;
 
   return (
-    <StHistoryItem>
-      <div>
-        {imageUrl ? (
-          <Image src={imageUrl} alt={name} width={32} height={32} />
-        ) : (
-          <Image src={"/images/square.png"} alt={name} width={32} height={32} />
-        )}
-        <div>
-          <StEllipsis>{key ? name : lane}</StEllipsis>
-          <div>{matchCount} 경기</div>
-        </div>
-      </div>
-      <div>{winRate.toFixed(0)}%</div>
-      <div>{(role / 5).toFixed(1)}</div>
-      <div>{laning.toFixed(1)}</div>
-      <div>{kda.toFixed(1)}</div>
-      {isShow && <Boundary />}
+    <StHistoryItem
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+      hover={hover}
+      active={router.asPath === href}
+    >
+      <Link href={href} passHref>
+        <ItemLink onClick={onClickHistoryItem}>
+          <div>
+            {imageUrl ? (
+              <Image src={imageUrl} alt={name} width={32} height={32} />
+            ) : (
+              <Image
+                src={"/images/square.png"}
+                alt={name}
+                width={32}
+                height={32}
+              />
+            )}
+            <div>
+              <StEllipsis>{key ? name : lane}</StEllipsis>
+              <div>{matchCount} 경기</div>
+            </div>
+          </div>
+          <div>{winRate.toFixed(0)}%</div>
+          <div>{(role / 5).toFixed(1)}</div>
+          <div>{laning.toFixed(1)}</div>
+          <div>{kda.toFixed(1)}</div>
+          <StTriangleWrapper active={router.asPath === href} hover={hover}>
+            <Triangle direction="right" />
+          </StTriangleWrapper>
+        </ItemLink>
+      </Link>
     </StHistoryItem>
   );
 };
@@ -40,11 +102,33 @@ const flexCenter = css`
   justify-content: center;
 `;
 
-const StHistoryItem = styled.li`
+const StHistoryItem = styled.li<{ hover: boolean; active: boolean }>`
   ${flexCenter}
-  width: 100%;
-  height: 3rem;
-  margin: 1rem 0rem;
+  width: 28.8rem;
+  height: 4rem;
+  margin-top: 0.5rem;
+  cursor: pointer;
+  position: relative;
+  ${({ active }) =>
+    active &&
+    css`
+      border: 1px dashed ${({ theme }) => theme.color.text};
+      border-radius: ${({ theme }) => theme.radius.l};
+    `}
+  ${({ hover }) =>
+    hover &&
+    css`
+      border: 1px dashed ${({ theme }) => theme.color.text};
+      border-radius: ${({ theme }) => theme.radius.l};
+    `}
+`;
+
+const ItemLink = styled.a`
+  ${flexCenter}
+  padding: 0rem 1rem;
+  width: 28.8rem;
+  height: 100%;
+  border-radius: inherit;
   & > :nth-child(1) {
     width: 10rem;
     & {
@@ -59,13 +143,12 @@ const StHistoryItem = styled.li`
         justify-content: space-evenly;
         width: 4rem;
         margin-left: 1rem;
+        color: ${({ theme }) => theme.color.text};
         & > :first-child {
-          color: ${({ theme }) => theme.color.text};
           font-size: ${({ theme }) => theme.font.size.m};
           font-weight: ${({ theme }) => theme.font.weight.bold};
         }
         & > :last-child {
-          color: ${({ theme }) => theme.color.text};
           font-size: ${({ theme }) => theme.font.size.r};
           font-weight: ${({ theme }) => theme.font.weight.normal};
         }
@@ -73,13 +156,12 @@ const StHistoryItem = styled.li`
     }
     & {
       display: flex;
+      color: ${({ theme }) => theme.color.text};
       & > :first-child {
-        color: ${({ theme }) => theme.color.text};
         font-size: ${({ theme }) => theme.font.size.m};
         font-weight: ${({ theme }) => theme.font.weight.bold};
       }
       & > :last-child {
-        color: ${({ theme }) => theme.color.text};
         font-size: ${({ theme }) => theme.font.size.r};
         font-weight: ${({ theme }) => theme.font.weight.normal};
       }
@@ -95,7 +177,6 @@ const StHistoryItem = styled.li`
     font-weight: ${({ theme }) => theme.font.weight.bold};
     width: 4rem;
   }
-  position: relative;
 `;
 
 const StEllipsis = styled.div`
@@ -103,6 +184,20 @@ const StEllipsis = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+`;
+
+const StTriangleWrapper = styled.div<{ hover: boolean; active: boolean }>`
+  ${({ hover, active }) =>
+    active || hover
+      ? css`
+          display: block;
+        `
+      : css`
+          display: none;
+        `}
+  position: absolute;
+  top: 0.4rem;
+  right: -2rem;
 `;
 
 export default HistoryItem;

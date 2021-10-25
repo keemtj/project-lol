@@ -38,13 +38,13 @@ const Profile = ({ data }: ProfileProps) => {
   const [isLoading, setLoading] = useState(false);
   const router = useRouter();
 
-  const refresh = () => {
-    // history stack에 안쌓임
-    router.replace(router.asPath);
-  };
+  // const refresh = () => {
+  //   // history stack에 안쌓임
+  //   router.replace(router.asPath, undefined, { shallow: true });
+  //   console.log("when..");
+  // };
 
   useEffect(() => {
-    refresh();
     const handleStart = () => {
       setLoading(true);
     };
@@ -85,6 +85,8 @@ const Profile = ({ data }: ProfileProps) => {
               isLoading={isLoading}
               mostLanes={data.mostLanes}
               mostChampions={data.mostChampions}
+              summoner={data.name}
+              matchCategory={data.matchCategory}
             />
           </StSection>
         </StMain>

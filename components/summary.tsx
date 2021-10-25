@@ -17,19 +17,19 @@ type SummaryProps = {
 const Summary = ({
   isLoading,
   summoner,
+  matchCategory,
   kda,
   laning,
   role,
-  matchCategory,
 }: SummaryProps) => {
   const router = useRouter();
   const [open, setOpen] = useState(false);
-  const [category, setCategory] = useState(matchCategory);
 
   const onClickDropDown = () => {
     setOpen(!open);
   };
-  const handleClick = (e: any) => {
+
+  const onClickDropDownItem = (e: any) => {
     e.preventDefault();
     router.push({
       pathname: "/profile",
@@ -38,20 +38,19 @@ const Summary = ({
         matchCategory: e.target.innerText,
       },
     });
-    setCategory(e.target.innerText);
   };
 
   return (
     <>
       <StH2>{summoner}</StH2>
       <StMatchSelectBox onClick={onClickDropDown}>
-        <div>{category}</div>
+        <div>{matchCategory}</div>
         <Triangle direction={open ? "up" : "down"} />
         {open && (
           <StDropDownBox>
             <StDropDownItem>
               <a
-                onClick={handleClick}
+                onClick={onClickDropDownItem}
                 style={{
                   backgroundColor:
                     router.query.matchCategory === "Normal"
@@ -64,7 +63,7 @@ const Summary = ({
             </StDropDownItem>
             <StDropDownItem>
               <a
-                onClick={handleClick}
+                onClick={onClickDropDownItem}
                 style={{
                   backgroundColor:
                     router.query.matchCategory === "SoloRank"
@@ -77,7 +76,7 @@ const Summary = ({
             </StDropDownItem>
             <StDropDownItem>
               <a
-                onClick={handleClick}
+                onClick={onClickDropDownItem}
                 style={{
                   backgroundColor:
                     router.query.matchCategory === "FreeRank"

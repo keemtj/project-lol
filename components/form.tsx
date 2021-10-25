@@ -7,8 +7,7 @@ type FormProps = {
   setValue: (form: string) => void;
 };
 
-const Form = (props: FormProps) => {
-  const { value, setValue } = props;
+const Form = ({ value, setValue }: FormProps) => {
   const router = useRouter();
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);

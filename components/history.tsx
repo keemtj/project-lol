@@ -1,3 +1,4 @@
+import router from "next/router";
 import styled, { css } from "styled-components";
 import Skeleton from "./common/skeleton";
 import HistoryItem from "./historyItem";
@@ -6,9 +7,17 @@ type HistoryProps = {
   isLoading: boolean;
   mostLanes: object[];
   mostChampions: object[];
+  summoner: string;
+  matchCategory: string;
 };
 
-const History = ({ isLoading, mostLanes, mostChampions }: HistoryProps) => {
+const History = ({
+  isLoading,
+  mostLanes,
+  mostChampions,
+  summoner,
+  matchCategory,
+}: HistoryProps) => {
   return (
     <StArticle2>
       <StIndex>
@@ -29,12 +38,22 @@ const History = ({ isLoading, mostLanes, mostChampions }: HistoryProps) => {
         ) : (
           <>
             {mostLanes.map((most: object, index: number) => (
-              <HistoryItem most={most} key={index} />
+              <HistoryItem
+                key={index}
+                most={most}
+                summoner={summoner}
+                matchCategory={matchCategory}
+              />
             ))}
             {mostChampions
               .slice(0, 7 - mostLanes.length)
               .map((most: object, index: number) => (
-                <HistoryItem most={most} key={index} />
+                <HistoryItem
+                  key={index}
+                  most={most}
+                  summoner={summoner}
+                  matchCategory={matchCategory}
+                />
               ))}
           </>
         )}
@@ -56,7 +75,7 @@ const flexCenter = css`
 `;
 
 const StArticle2 = styled.article`
-  width: 25.5rem;
+  width: 28.8rem;
   margin: 0 auto;
 `;
 
