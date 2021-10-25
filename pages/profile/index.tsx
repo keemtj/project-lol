@@ -31,6 +31,7 @@ type ProfileProps = {
     matchCategory: string;
     mostLanes: object[];
     mostChampions: object[];
+    tierHistory: object[];
   };
 };
 
@@ -77,6 +78,7 @@ const Profile = ({ data }: ProfileProps) => {
               kda={data.kda}
               laning={data.laning}
               role={data.role}
+              tierHistory={data.tierHistory}
             />
           </StSection>
           <StBr />

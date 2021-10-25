@@ -4,6 +4,7 @@ import styled, { css } from "styled-components";
 import Triangle from "./common/triangle";
 import { theme } from "../styles/theme";
 import Skeleton from "./common/skeleton";
+import TierHistoryGraph from "./chart";
 
 type SummaryProps = {
   isLoading: boolean;
@@ -12,6 +13,7 @@ type SummaryProps = {
   kda: number;
   laning: number;
   role: number;
+  tierHistory: object[];
 };
 
 const Summary = ({
@@ -21,6 +23,7 @@ const Summary = ({
   kda,
   laning,
   role,
+  tierHistory,
 }: SummaryProps) => {
   const router = useRouter();
   const [open, setOpen] = useState(false);
@@ -120,9 +123,13 @@ const Summary = ({
             </StAverageItem>
           )}
         </StAverageBox>
-        <StTearHistory>
-          {isLoading ? <Skeleton shape="wide" /> : <div>line chart</div>}
-        </StTearHistory>
+        <StTierHistory>
+          {isLoading ? (
+            <Skeleton shape="wide" />
+          ) : (
+            <TierHistoryGraph tierHistory={tierHistory} />
+          )}
+        </StTierHistory>
       </StArticle>
     </>
   );
@@ -225,7 +232,7 @@ const StAverageItem = styled.li`
   }
 `;
 
-const StTearHistory = styled.div`
+const StTierHistory = styled.div`
   ${flexCenter}
   margin-left: 1.6rem;
   width: 100%;

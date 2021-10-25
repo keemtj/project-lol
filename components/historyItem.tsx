@@ -5,16 +5,12 @@ import Link from "next/link";
 import Router from "next/router";
 import Triangle from "./common/triangle";
 import { useRouter } from "next/router";
+import textUtil from "../util/textUtil";
 
 type MostlanesProps = {
   most: any;
   summoner: string;
   matchCategory: string;
-};
-
-const textUtil = (text: string) => {
-  const result = text.split(" ").join("+");
-  return result;
 };
 
 const HistoryItem = ({ most, summoner, matchCategory }: MostlanesProps) => {
