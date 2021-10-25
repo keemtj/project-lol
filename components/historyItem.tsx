@@ -6,6 +6,7 @@ import Router from "next/router";
 import Triangle from "./common/triangle";
 import { useRouter } from "next/router";
 import textUtil from "../util/textUtil";
+import { theme } from "../styles/theme";
 
 type MostlanesProps = {
   most: any;
@@ -67,12 +68,7 @@ const HistoryItem = ({ most, summoner, matchCategory }: MostlanesProps) => {
             {imageUrl ? (
               <Image src={imageUrl} alt={name} width={32} height={32} />
             ) : (
-              <Image
-                src={"/images/square.png"}
-                alt={name}
-                width={32}
-                height={32}
-              />
+              <StImage lane={lane} />
             )}
             <div>
               <StEllipsis>{key ? name : lane}</StEllipsis>
@@ -91,6 +87,16 @@ const HistoryItem = ({ most, summoner, matchCategory }: MostlanesProps) => {
     </StHistoryItem>
   );
 };
+
+const StImage = styled.div<{ lane: string }>`
+  width: 3.4rem;
+  height: 3.4rem;
+  background: ${({ lane }) => `url(/images/${lane}.png)`};
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  background-size: 50%;
+  background-color: ${({ theme }) => theme.color.dropDownActive};
+`;
 
 const flexCenter = css`
   display: flex;
@@ -128,7 +134,7 @@ const ItemLink = styled.a`
   & > :nth-child(1) {
     width: 10rem;
     & {
-      img {
+      & > div:first-child {
         width: 3.2rem;
         border-radius: ${({ theme }) => theme.radius.s};
       }
