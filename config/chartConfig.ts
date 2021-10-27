@@ -12,11 +12,10 @@ const chartConfig = (tierHistory: any) => {
             y: leaguePoint,
           })
         ),
-        cubicInterpolationMode: "monotone",
-        tension: 0.4,
         fill: false,
         backgroundColor: theme.color.chart,
         borderColor: theme.color.chartBorder,
+        borderWidth: 1,
         segment: {
           borderColor: theme.color.chart,
         },
@@ -33,10 +32,9 @@ const chartConfig = (tierHistory: any) => {
       },
       y: {
         display: false,
-        suggestedMax: 20,
-        suggestedMin: -10,
       },
     },
+    maintainAspectRatio: false,
     radius: 0,
     animation: false,
     interaction: {

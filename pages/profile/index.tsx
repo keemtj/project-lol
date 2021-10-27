@@ -39,13 +39,17 @@ const Profile = ({ data }: ProfileProps) => {
   const [isLoading, setLoading] = useState(false);
   const router = useRouter();
 
-  // const refresh = () => {
-  //   // history stack에 안쌓임
-  //   router.replace(router.asPath, undefined, { shallow: true });
-  //   console.log("when..");
-  // };
+  const refresh = () => {
+    // history stack에 안쌓임
+    router.replace(router.asPath);
+  };
 
   useEffect(() => {
+    refresh();
+  }, [data.matchCategory]);
+
+  useEffect(() => {
+    // refresh();
     const handleStart = () => {
       setLoading(true);
     };
